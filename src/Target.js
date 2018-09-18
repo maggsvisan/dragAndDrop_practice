@@ -36,18 +36,22 @@ class Target extends Component {
    
   }
 
+  componentDidMount () {
+    objResponse = objResponse.slice(1);
+  }
+
   updateThisCounter = (response,item) => {
-    console.log("this is the Target", response);
-    console.log("item", item)
-    console.log(this.props.theItems); 
-    console.log("LENGTH", Object.keys(objResponse).length-1)
+    objResponse.push({text: response});
 
     this.setState({response: objResponse}, ()=>{
       console.log("repsosneObjRes", this.state.response);
     })
 
-    console.log("counter", this.props.counter)
-   }
+  }
+
+  sendForm = () => {
+    console.log("sending form...", this.state.response);
+  }
 
   render() {
     const { connectDropTarget, hovered, item } = this.props;
@@ -57,11 +61,6 @@ class Target extends Component {
       <div className="target" style={{ background: backgroundColor }}>
       Form Canvas
          <div>
-            {/*  esta es la parte que funciona, falta darle diseño
-              {this.props.theItems.map((item, index) => (
-                <p key={item.id}> {item.name} </p>
-              ))}
-            */}
             <div className="card-container-target">
             {this.props.theItems.map((item, i) => (
               <Item key={item.id} 
@@ -70,7 +69,7 @@ class Target extends Component {
               />
             ))}
           </div>
-          <button type="button"> Save </button>
+          <button type="button" onClick={this.sendForm} > Save Form </button>
         </div>
       </div>
     );

@@ -69,8 +69,9 @@ class App extends Component {
   }
   */
 
-  deleteItem = id => {
-      newArray.push({ id: id, name: `Entry a question` });
+  deleteItem = (id, itemCounter) => {
+      console.log("itemCounter",itemCounter);
+      newArray.push({ id: itemCounter, name: `Entry a question` });
       this.setState({ items2: newArray }, () => {
         console.log("items2", this.state.items2);
       });
@@ -109,7 +110,7 @@ class App extends Component {
               {this.state.items.map((item, index) => (
                 <Item key={item.id}
                   item={item}
-                  handleDrop={(id) => this.deleteItem(id)}
+                  handleDrop={(id,itemCounter) => this.deleteItem(id,itemCounter)}
                   counter = {this.state.counter}
                   triggerUpdateCounter={this.updateThisCounter} />
               ))}

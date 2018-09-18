@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { DragSource } from 'react-dnd';
 
+var itemCounter=0;
+
 const itemSource = {
   beginDrag(props) {
     console.log('dragging');
@@ -10,8 +12,12 @@ const itemSource = {
     if (!monitor.didDrop()) {
       return;
     }
+    console.log("Is dragged");
+    itemCounter= itemCounter + 1;
     
-    return props.handleDrop(props.item.id);
+    console.log(itemCounter);
+
+    return props.handleDrop(props.item.id, itemCounter);
   }
 }
 
@@ -26,9 +32,9 @@ function collect(connect, monitor) {
 class Item extends  Component {
   constructor(props){
     super(props);
-    console.log(props);
     this.state = {
-      inputField: ''
+      inputField: '',
+      counter:0
 
     }
   }
@@ -39,6 +45,7 @@ class Item extends  Component {
 
   sendToProps = () => {
     this.props.triggerUpdateCounter(this.state.inputField);
+    console.log("counterSend", itemCounter);
   }
  
   render() {
