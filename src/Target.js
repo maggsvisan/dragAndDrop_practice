@@ -43,15 +43,21 @@ class Target extends Component {
 
   componentDidMount (props) {
     objResponse = objResponse.slice(1);
+    
   }
 
   updateThisCounter = (id,input) => {
-    
+    console.log("props", this.state.response);
     console.log("id", id);
     console.log("inout",input)
+     
+    console.log("the props deletedItems",this.props.deletedItems);
 
+    //antes de darle push a uno nueo debe de ver que no tenga en el array el/los ids que ya se borrraron
+    //objResponse = objResponse.filter(item => item.id !== id);
     objResponse.push({id:id, text: input});
-    console.log("objResponse", objResponse);
+    
+    console.log("something added", objResponse);
     
     this.setState({response: objResponse}, ()=>{
       console.log("repsosneObjRes", this.state.response);
@@ -71,7 +77,7 @@ class Target extends Component {
 
     const result = deleteItem.filter(item => item.id !== id);
     console.log("reusltFulter", result);
-
+    this.setState({response:result})
     this.props.updateItems(result,id);
   }
   

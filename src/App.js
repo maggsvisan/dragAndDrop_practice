@@ -11,122 +11,46 @@ const update = require('immutability-helper');
 var itemCounter = 0;
 var newArray = [];
 
+
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      language: '',
       counter: 0,
+      deletedItemsIds:'',
       items: [
         { id: 1, name: 'Item 1' }
       ],
-
       itemTarget: [],
-      cards: [
-        {
-          id: 1,
-          text: 'Write a cool JS library',
-        },
-        {
-          id: 2,
-          text: 'Make it generic enough',
-        },
-        {
-          id: 3,
-          text: 'Write README',
-        },
-        {
-          id: 4,
-          text: 'Create some examples',
-        },
-        {
-          id: 5,
-          text:
-            'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-        },
-        {
-          id: 6,
-          text: '???',
-        },
-        {
-          id: 7,
-          text: 'PROFIT',
-        },
-      ],
     }
   }
 
-
-  removeItem = (id) => {
-    console.log("now in APP", id);
-    /*
-    this.setState(prevState => {
-      return {
-        items: prevState.items.filter(item => item.id !== id)
-      }
-    })
-    */
-  }
-
-
   deleteItem = (id) => {
-    console.log("this.state.counter", this.state.counter);
     itemCounter = this.state.counter;
     itemCounter = itemCounter + 1;
 
-    console.log("itemCounter", itemCounter);
+    //this gets the items inside the Target Area
     newArray.push({ id: itemCounter });
 
-    console.log("newArray", newArray);
-
     this.setState({ itemTarget: newArray }, () => {
-      console.log("itemTarget", this.state.itemTarget);
       this.setState({ counter: itemCounter });
     });
   }
 
-  //missigen Target.js function to have the response back (Target creates new objecs)
   updateThisCounter = (response) => {
     console.log("updateThisCounter", response)
   }
 
   updateTargetItems = (array, id) => {
-    console.log("the array is", array);
-    console.log("this.state.counter",this.state.counter);
-    console.log("newArray", newArray );
-
+    console.log("the array", array);
     this.setState({ itemTarget: array }, () => {
-      console.log("itemTarget", this.state.itemTarget);
-
       var theArray = this.state.itemTarget;
-
       const result = theArray.filter(item => item.id !== id);
-      
       newArray = newArray.filter(item => item.id !== id);
       
-      this.setState({ itemTarget: result }, () => {
-        console.log("itemTarget", this.state.itemTarget); 
-      });
-
-      console.log("result", result);
-      console.log("newArray", newArray);
+      this.setState({ itemTarget: result });
+      this.setState({deletedItemsIds:id});
     });
-  }
-
-
-  moveCard = (dragIndex, hoverIndex) => {
-    const { cards } = this.state
-    const dragCard = cards[dragIndex]
-
-    this.setState(
-      update(this.state, {
-        cards: {
-          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
-        },
-      }),
-    )
-    console.log("cards", cards);
-
   }
 
   render() {
@@ -150,6 +74,7 @@ class App extends Component {
             <div className="canvas-container">
               <Target theItems={this.state.itemTarget}
                 counter={this.state.counter}
+                deletedItems={this.state.deletedItemsIds}
                 updateItems={(itemsArray, id) => this.updateTargetItems(itemsArray, id)}
               />
             </div>
