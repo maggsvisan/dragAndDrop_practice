@@ -10,7 +10,7 @@ const itemSource = {
     if (!monitor.didDrop()) {
       return;
     }
-
+    
     return props.handleDrop(props.item.id);
   }
 }
@@ -26,6 +26,7 @@ function collect(connect, monitor) {
 class Item extends  Component {
   constructor(props){
     super(props);
+    console.log(props);
     this.state = {
       inputField: ''
 
@@ -33,24 +34,20 @@ class Item extends  Component {
   }
 
   handleChange = event => {
-    this.setState({ inputField: event.target.value }, () => {
-      console.log(this.state.inputField);
-    });
+    this.setState({ inputField: event.target.value });
   };
 
   sendToProps = () => {
-    console.log("Click!")
-    //var newInput = this.state.inputField;
     this.props.triggerUpdateCounter(this.state.inputField);
-    console.log("newInput", this.state.inputField);
   }
  
   render() {
     const { isDragging, connectDragSource, item } = this.props;
-    const opacity = isDragging ? 0 : 1;
+   // const opacity = isDragging ? 0 : 1;      {/* <div className="item" style={{ opacity }}> */}
 
     return connectDragSource(
-      <div className="item" style={{ opacity }}>
+    
+      <div className="item">
         <span>{item.name}</span>
         <br />
         <input type="text" onChange={this.handleChange} />

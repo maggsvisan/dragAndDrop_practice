@@ -13,9 +13,12 @@ function collect(connect, monitor) {
   }
 }
 
+var objResponse = [{}];
+
 class Target extends Component {
   state = {
     cards: [{}],
+    response: [{}]
   
   }
 
@@ -30,8 +33,21 @@ class Target extends Component {
         },
       }),
     )
-    console.log("cards",this.state.cards );
+   
   }
+
+  updateThisCounter = (response,item) => {
+    console.log("this is the Target", response);
+    console.log("item", item)
+    console.log(this.props.theItems); 
+    console.log("LENGTH", Object.keys(objResponse).length-1)
+
+    this.setState({response: objResponse}, ()=>{
+      console.log("repsosneObjRes", this.state.response);
+    })
+
+    console.log("counter", this.props.counter)
+   }
 
   render() {
     const { connectDropTarget, hovered, item } = this.props;
@@ -48,7 +64,10 @@ class Target extends Component {
             */}
             <div className="card-container-target">
             {this.props.theItems.map((item, i) => (
-              <Item key={item.id} item={item} />
+              <Item key={item.id} 
+                    item={item}
+                    triggerUpdateCounter = {(value)=>  this.updateThisCounter(value, item)}
+              />
             ))}
           </div>
           <button type="button"> Save </button>

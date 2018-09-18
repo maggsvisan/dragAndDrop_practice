@@ -14,14 +14,11 @@ class App extends Component {
     super(props)
     this.state = {
       language: '',
-      counter: '',
+      counter: 0,
       items: [
-        { id: 1, name: 'Item 1' },
-        { id: 2, name: 'Item 2' },
-        { id: 3, name: 'Item 3' },
-        { id: 4, name: 'Item 4' },
+        { id: 1, name: 'Item 1' }
       ],
-  
+
       items2: [],
       cards: [
         {
@@ -56,8 +53,8 @@ class App extends Component {
       ],
     }
   }
-  
 
+  /*
   deleteItem = id => {
     this.setState(prevState => {
       return {
@@ -70,10 +67,19 @@ class App extends Component {
       });
     })
   }
+  */
 
+  deleteItem = id => {
+      newArray.push({ id: id, name: `Entry a question` });
+      this.setState({ items2: newArray }, () => {
+        console.log("items2", this.state.items2);
+      });
+  }
+
+  //missigen Target.js function to have the response back (Target creates new objecs)
   updateThisCounter = (response) => {
-   console.log("updateThisCounter", response)
-}
+    console.log("updateThisCounter", response)
+  }
 
   moveCard = (dragIndex, hoverIndex) => {
     const { cards } = this.state
@@ -86,8 +92,8 @@ class App extends Component {
         },
       }),
     )
-    console.log("cards",cards );
-    
+    console.log("cards", cards);
+
   }
 
   render() {
@@ -101,16 +107,17 @@ class App extends Component {
           <div className="app-container">
             <div className="item-container">
               {this.state.items.map((item, index) => (
-                <Item key={item.id} 
-                      item={item} 
-                      handleDrop={(id) => this.deleteItem(id)} 
-                      triggerUpdateCounter = {this.updateThisCounter} />
+                <Item key={item.id}
+                  item={item}
+                  handleDrop={(id) => this.deleteItem(id)}
+                  counter = {this.state.counter}
+                  triggerUpdateCounter={this.updateThisCounter} />
               ))}
             </div>
-            <div  className="canvas-container">
-              <Target theItems={this.state.items2} />
+            <div className="canvas-container">
+              <Target theItems={this.state.items2}  counter = {this.state.counter} />
             </div>
-          
+
           </div>
         </div>
       </div>
