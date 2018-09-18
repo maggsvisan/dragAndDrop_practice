@@ -34,7 +34,8 @@ class Item extends  Component {
     super(props);
     this.state = {
       inputField: '',
-      counter:0
+      counter:0,
+      isButtonDisabled: false
 
     }
   }
@@ -43,9 +44,27 @@ class Item extends  Component {
     this.setState({ inputField: event.target.value });
   };
 
+
+  deleteItem = (props) =>{
+    console.log("REMOVE",this.props.item.id);
+    console.log("this.state.inputField",this.state.inputField);
+    //this.props.removeItem(props.item.id);
+  }
+
   sendToProps = () => {
-    this.props.triggerUpdateCounter(this.state.inputField);
-    console.log("counterSend", itemCounter);
+    if (this.state.inputField === null || this.state.inputField ===''){
+      alert("Please enter a value");
+    } 
+
+    else{
+      this.props.triggerUpdateCounter(this.state.inputField);
+      console.log("counterSend", itemCounter);
+  
+      this.setState({
+        isButtonDisabled: true
+      });
+    }
+    
   }
  
   render() {
@@ -53,12 +72,15 @@ class Item extends  Component {
    // const opacity = isDragging ? 0 : 1;      {/* <div className="item" style={{ opacity }}> */}
 
     return connectDragSource(
-    
       <div className="item">
+     
+      <div className="second">  
         <span>{item.name}</span>
         <br />
-        <input type="text" onChange={this.handleChange} />
-        <button onClick={this.sendToProps}> Save! </button>
+        <input type="text" onChange={this.handleChange} className="inputText" />
+        <button onClick={this.sendToProps} disabled={this.state.isButtonDisabled}> Save! </button>
+        <button onClick={this.deleteItem} > Remove </button>
+       </div> 
       </div>
     );
   }

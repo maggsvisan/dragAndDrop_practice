@@ -51,7 +51,13 @@ class Target extends Component {
 
   sendForm = () => {
     console.log("sending form...", this.state.response);
+    console.log("the items", this.props.theItems);
   }
+
+  removeItemTarget = (id) => {
+    console.log("now in tARGET",id);
+  }
+  
 
   render() {
     const { connectDropTarget, hovered, item } = this.props;
@@ -60,11 +66,12 @@ class Target extends Component {
     return connectDropTarget(
       <div className="target" style={{ background: backgroundColor }}>
       Form Canvas
-         <div>
-            <div className="card-container-target">
+         <div className="align-div">
+            <div className="card-container-target align-div">
             {this.props.theItems.map((item, i) => (
               <Item key={item.id} 
                     item={item}
+                    removeItem={this.removeItemTarget}
                     triggerUpdateCounter = {(value)=>  this.updateThisCounter(value, item)}
               />
             ))}

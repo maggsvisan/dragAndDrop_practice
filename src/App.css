@@ -41,7 +41,7 @@
 }
 
 .item-container {
-  width: 30%;
+  width: 40%;
 }
 
 .card-container {
@@ -50,8 +50,10 @@
 
 .item {
   padding: 10px;
-  border: 1px solid grey;
+  border-radius: 25px;
+  border: 2px solid gray;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .target {
@@ -70,4 +72,24 @@
 
 .card-container-target {
   margin-top: 0px;
+}
+
+
+.wrapper {
+  border: 1px solid black;
+  overflow: hidden; /* will contain if #first is longer than #second */
+  width: 100%;
+}
+
+.align-div{
+  margin: 0 auto;
+}
+
+button {
+  padding: 5px;
+  font-size: 12px;
+}
+
+button:disabled {
+ opacity: 0.5;
 }

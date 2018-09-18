@@ -54,20 +54,18 @@ class App extends Component {
     }
   }
 
-  /*
-  deleteItem = id => {
+  
+  removeItem = (id) => {
+    console.log("now in APP",id);
+    /*
     this.setState(prevState => {
       return {
         items: prevState.items.filter(item => item.id !== id)
       }
-    }, () => {
-      newArray.push({ id: id, name: `Entry a question` });
-      this.setState({ items2: newArray }, () => {
-        console.log("items2", this.state.items2);
-      });
     })
+    */
   }
-  */
+  
 
   deleteItem = (id, itemCounter) => {
       console.log("itemCounter",itemCounter);
@@ -111,6 +109,7 @@ class App extends Component {
                 <Item key={item.id}
                   item={item}
                   handleDrop={(id,itemCounter) => this.deleteItem(id,itemCounter)}
+                
                   counter = {this.state.counter}
                   triggerUpdateCounter={this.updateThisCounter} />
               ))}
