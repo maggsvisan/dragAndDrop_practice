@@ -8,7 +8,9 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContext } from 'react-dnd'
 const update = require('immutability-helper');
 
+var itemCounter = 0;
 var newArray = [];
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -19,7 +21,7 @@ class App extends Component {
         { id: 1, name: 'Item 1' }
       ],
 
-      items2: [],
+      itemTarget: [],
       cards: [
         {
           id: 1,
@@ -54,9 +56,9 @@ class App extends Component {
     }
   }
 
-  
+
   removeItem = (id) => {
-    console.log("now in APP",id);
+    console.log("now in APP", id);
     /*
     this.setState(prevState => {
       return {
@@ -65,20 +67,52 @@ class App extends Component {
     })
     */
   }
-  
 
-  deleteItem = (id, itemCounter) => {
-      console.log("itemCounter",itemCounter);
-      newArray.push({ id: itemCounter, name: `Entry a question` });
-      this.setState({ items2: newArray }, () => {
-        console.log("items2", this.state.items2);
-      });
+
+  deleteItem = (id) => {
+    console.log("this.state.counter", this.state.counter);
+    itemCounter = this.state.counter;
+    itemCounter = itemCounter + 1;
+
+    console.log("itemCounter", itemCounter);
+    newArray.push({ id: itemCounter });
+
+    console.log("newArray", newArray);
+
+    this.setState({ itemTarget: newArray }, () => {
+      console.log("itemTarget", this.state.itemTarget);
+      this.setState({ counter: itemCounter });
+    });
   }
 
   //missigen Target.js function to have the response back (Target creates new objecs)
   updateThisCounter = (response) => {
     console.log("updateThisCounter", response)
   }
+
+  updateTargetItems = (array, id) => {
+    console.log("the array is", array);
+    console.log("this.state.counter",this.state.counter);
+    console.log("newArray", newArray );
+
+    this.setState({ itemTarget: array }, () => {
+      console.log("itemTarget", this.state.itemTarget);
+
+      var theArray = this.state.itemTarget;
+
+      const result = theArray.filter(item => item.id !== id);
+      
+      newArray = newArray.filter(item => item.id !== id);
+      
+      this.setState({ itemTarget: result }, () => {
+        console.log("itemTarget", this.state.itemTarget); 
+      });
+
+      console.log("result", result);
+      console.log("newArray", newArray);
+    });
+  }
+
 
   moveCard = (dragIndex, hoverIndex) => {
     const { cards } = this.state
@@ -108,14 +142,16 @@ class App extends Component {
               {this.state.items.map((item, index) => (
                 <Item key={item.id}
                   item={item}
-                  handleDrop={(id,itemCounter) => this.deleteItem(id,itemCounter)}
-                
-                  counter = {this.state.counter}
+                  handleDrop={(id, itemCounter) => this.deleteItem(id, itemCounter)}
+                  counter={this.state.counter}
                   triggerUpdateCounter={this.updateThisCounter} />
               ))}
             </div>
             <div className="canvas-container">
-              <Target theItems={this.state.items2}  counter = {this.state.counter} />
+              <Target theItems={this.state.itemTarget}
+                counter={this.state.counter}
+                updateItems={(itemsArray, id) => this.updateTargetItems(itemsArray, id)}
+              />
             </div>
 
           </div>

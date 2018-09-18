@@ -14,11 +14,11 @@ const itemSource = {
       return;
     }
     console.log("Is dragged");
-    //itemCounter= itemCounter + 1;
-    //console.log(itemCounter);
+    itemCounter= itemCounter + 1;
+    
+    console.log(itemCounter);
 
-    //return props.handleDrop(props.item.id, itemCounter);
-    return props.handleDrop(props.item.id);
+  
   }
 }
 
@@ -30,7 +30,7 @@ function collect(connect, monitor) {
   }
 }
 
-class Item extends  Component {
+class ItemTarget extends  Component {
   constructor(props){
     super(props);
     this.state = {
@@ -50,7 +50,7 @@ class Item extends  Component {
   };
 
   deleteItem = (props) =>{
-    console.log("REMOVE",this.props.item.id);
+    console.log("ITEM REMOVE",this.props.item.id);
     console.log("this.state.inputField",this.state.inputField);
     this.props.removeItem(this.props.item.id);
     //this.props.removeItem(props.item.id);
@@ -80,7 +80,12 @@ class Item extends  Component {
 
     return connectDragSource(
       <div className="item">
-        <h4> Add entry </h4>
+     
+      <div className="second">  
+        <input type="text" onChange={this.handleChange} className="inputText" />
+        <button onClick={this.sendToProps} disabled={this.state.isButtonDisabled}> Save! </button>
+        <button onClick={this.deleteItem} > Remove </button>
+       </div> 
       </div>
     );
   }
@@ -88,4 +93,4 @@ class Item extends  Component {
 
 
 
-export default DragSource('item', itemSource, collect)(Item);
+export default DragSource('item', itemSource, collect)(ItemTarget);

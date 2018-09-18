@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DropTarget } from 'react-dnd';
 
 import Item from './Item';
+import ItemTarget from './ItemTarget';
 import Card from './Card';
 const update = require('immutability-helper');
 
@@ -16,10 +17,14 @@ function collect(connect, monitor) {
 var objResponse = [{}];
 
 class Target extends Component {
-  state = {
-    cards: [{}],
-    response: [{}]
-  
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      cards: [{}],
+    response: [{}],
+    targetItems :[{}]
+    }
   }
 
   moveCard = (dragIndex, hoverIndex) => {
@@ -36,13 +41,18 @@ class Target extends Component {
    
   }
 
-  componentDidMount () {
+  componentDidMount (props) {
     objResponse = objResponse.slice(1);
   }
 
-  updateThisCounter = (response,item) => {
-    objResponse.push({text: response});
+  updateThisCounter = (id,input) => {
+    
+    console.log("id", id);
+    console.log("inout",input)
 
+    objResponse.push({id:id, text: input});
+    console.log("objResponse", objResponse);
+    
     this.setState({response: objResponse}, ()=>{
       console.log("repsosneObjRes", this.state.response);
     })
@@ -56,6 +66,13 @@ class Target extends Component {
 
   removeItemTarget = (id) => {
     console.log("now in tARGET",id);
+    console.log("this.props.theItems", this.props.theItems);
+    var deleteItem = this.state.response;
+
+    const result = deleteItem.filter(item => item.id !== id);
+    console.log("reusltFulter", result);
+
+    this.props.updateItems(result,id);
   }
   
 
@@ -69,10 +86,11 @@ class Target extends Component {
          <div className="align-div">
             <div className="card-container-target align-div">
             {this.props.theItems.map((item, i) => (
-              <Item key={item.id} 
+              <ItemTarget key={item.id} 
                     item={item}
-                    removeItem={this.removeItemTarget}
-                    triggerUpdateCounter = {(value)=>  this.updateThisCounter(value, item)}
+                    draggable="true"
+                    removeItem={(value)=>  this.removeItemTarget(value)}
+                    triggerUpdateCounter = {(id,input)=>  this.updateThisCounter(id,input)}
               />
             ))}
           </div>
