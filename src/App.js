@@ -9,8 +9,7 @@ import { DragDropContext } from 'react-dnd'
 const update = require('immutability-helper');
 
 var itemCounter = 0;
-var newArray = [];
-
+var targetItems = []; //items dragged into the Target area
 
 class App extends Component {
   constructor(props) {
@@ -25,28 +24,24 @@ class App extends Component {
     }
   }
 
-  deleteItem = (id) => {
-    itemCounter = this.state.counter;
-    itemCounter = itemCounter + 1;
+  addItem = (id, counter) => {
+    console.log("se agrega el item:", counter);
 
     //this gets the items inside the Target Area
-    newArray.push({ id: itemCounter });
-
-    this.setState({ itemTarget: newArray }, () => {
+    targetItems.push({ id: counter });
+    console.log("targetItems", targetItems);
+    
+    this.setState({ itemTarget: targetItems }, () => {
       this.setState({ counter: itemCounter });
     });
   }
 
-  updateThisCounter = (response) => {
-    console.log("updateThisCounter", response)
-  }
-
   updateTargetItems = (array, id) => {
-    console.log("the array", array);
     this.setState({ itemTarget: array }, () => {
+    
       var theArray = this.state.itemTarget;
       const result = theArray.filter(item => item.id !== id);
-      newArray = newArray.filter(item => item.id !== id);
+      targetItems = targetItems.filter(item => item.id !== id);
       
       this.setState({ itemTarget: result });
       this.setState({deletedItemsIds:id});
@@ -66,16 +61,17 @@ class App extends Component {
               {this.state.items.map((item, index) => (
                 <Item key={item.id}
                   item={item}
-                  handleDrop={(id, itemCounter) => this.deleteItem(id, itemCounter)}
+                  handleDrop={(id, itemCounter) => this.addItem(id, itemCounter)}
                   counter={this.state.counter}
-                  triggerUpdateCounter={this.updateThisCounter} />
+                 />
               ))}
             </div>
             <div className="canvas-container">
-              <Target theItems={this.state.itemTarget}
+              <Target 
                 counter={this.state.counter}
                 deletedItems={this.state.deletedItemsIds}
                 updateItems={(itemsArray, id) => this.updateTargetItems(itemsArray, id)}
+                targetItems= {targetItems}
               />
             </div>
 

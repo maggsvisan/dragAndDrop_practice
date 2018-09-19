@@ -27,26 +27,14 @@ class Target extends Component {
     }
   }
 
-  moveCard = (dragIndex, hoverIndex) => {
-    const { cards } = this.state
-    const dragCard = cards[dragIndex]
-
-    this.setState(
-      update(this.state, {
-        cards: {
-          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
-        },
-      }),
-    )
-   
-  }
-
   componentDidMount (props) {
     objResponse = objResponse.slice(1);
     
   }
 
-  updateThisCounter = (id,input) => {
+  updateTargetItems = (id,input) => {
+    console.log("ENTRAAAAAAAAA", id);
+    console.log("targetItems", this.props.targetItems);
     console.log("props", this.state.response);
     console.log("id", id);
     console.log("inout",input)
@@ -57,7 +45,7 @@ class Target extends Component {
     //objResponse = objResponse.filter(item => item.id !== id);
     objResponse.push({id:id, text: input});
     
-    console.log("something added", objResponse);
+    //console.log("something added", objResponse);
     
     this.setState({response: objResponse}, ()=>{
       console.log("repsosneObjRes", this.state.response);
@@ -66,8 +54,12 @@ class Target extends Component {
   }
 
   sendForm = () => {
+    //fetch to post data
+
     console.log("sending form...", this.state.response);
-    console.log("the items", this.props.theItems);
+    alert("Reload!");
+    //window.location.reload()
+    //console.log("the items", this.props.theItems);
   }
 
   removeItemTarget = (id) => {
@@ -91,12 +83,12 @@ class Target extends Component {
       Form Canvas
          <div className="align-div">
             <div className="card-container-target align-div">
-            {this.props.theItems.map((item, i) => (
+            {this.props.targetItems.map((item, i) => (
               <ItemTarget key={item.id} 
                     item={item}
                     draggable="true"
                     removeItem={(value)=>  this.removeItemTarget(value)}
-                    triggerUpdateCounter = {(id,input)=>  this.updateThisCounter(id,input)}
+                    triggerUpdateTarget = {(id,input)=>  this.updateTargetItems(id,input)}
               />
             ))}
           </div>

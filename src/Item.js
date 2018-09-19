@@ -6,7 +6,7 @@ var itemList =[];
 
 const itemSource = {
   beginDrag(props) {
-    console.log('dragging');
+    //console.log('dragging');
     return props.item;
   },
   endDrag(props, monitor, component) {
@@ -14,11 +14,8 @@ const itemSource = {
       return;
     }
     console.log("Is dragged");
-    //itemCounter= itemCounter + 1;
-    //console.log(itemCounter);
-
-    //return props.handleDrop(props.item.id, itemCounter);
-    return props.handleDrop(props.item.id);
+    itemCounter= itemCounter + 1;
+    return props.handleDrop(props.item.id, itemCounter);
   }
 }
 
@@ -53,7 +50,6 @@ class Item extends  Component {
     console.log("REMOVE",this.props.item.id);
     console.log("this.state.inputField",this.state.inputField);
     this.props.removeItem(this.props.item.id);
-    //this.props.removeItem(props.item.id);
   }
 
   sendToProps = () => {
@@ -63,10 +59,8 @@ class Item extends  Component {
 
     else{
       itemList.push({id:this.props.item.id, text:this.state.inputField });
-    
-      this.props.triggerUpdateCounter(this.props.item.id,this.state.inputField );
+      this.props.triggerUpdateTarget(this.props.item.id,this.state.inputField );
       
-  
       this.setState({
         isButtonDisabled: true
       });
@@ -76,8 +70,7 @@ class Item extends  Component {
  
   render() {
     const { isDragging, connectDragSource, item } = this.props;
-   // const opacity = isDragging ? 0 : 1;      {/* <div className="item" style={{ opacity }}> */}
-
+   
     return connectDragSource(
       <div className="item">
         <h4> Add entry </h4>

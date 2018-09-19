@@ -64,7 +64,7 @@ class ItemTarget extends  Component {
     else{
       itemList.push({id:this.props.item.id, text:this.state.inputField });
     
-      this.props.triggerUpdateCounter(this.props.item.id,this.state.inputField );
+      this.props.triggerUpdateTarget(this.props.item.id,this.state.inputField );
       
   
       this.setState({
