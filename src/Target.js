@@ -69,7 +69,7 @@ class Target extends Component {
       alert("REFRESH");
       return false;
     }
-
+ 
 
     console.log("sending form...", this.state.response);
     alert("Reload!");
