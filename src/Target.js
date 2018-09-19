@@ -4,6 +4,7 @@ import { DropTarget } from 'react-dnd';
 import Item from './Item';
 import ItemTarget from './ItemTarget';
 import Card from './Card';
+import { isUndefined } from 'util';
 const update = require('immutability-helper');
 
 function collect(connect, monitor) {
@@ -22,57 +23,71 @@ class Target extends Component {
     super(props)
     this.state = {
       cards: [{}],
-    response: [{}],
-    targetItems :[{}]
+      response: [{}],
+      targetItems: [{}]
     }
   }
 
-  componentDidMount (props) {
+  componentDidMount(props) {
     objResponse = objResponse.slice(1);
-    
+
   }
 
-  updateTargetItems = (id,input) => {
+  updateTargetItems = (id, input) => {
     console.log("ENTRAAAAAAAAA", id);
     console.log("targetItems", this.props.targetItems);
     console.log("props", this.state.response);
     console.log("id", id);
-    console.log("inout",input)
-     
-    console.log("the props deletedItems",this.props.deletedItems);
+    console.log("inout", input)
+
+    console.log("the props deletedItems", this.props.deletedItems);
 
     //antes de darle push a uno nueo debe de ver que no tenga en el array el/los ids que ya se borrraron
     //objResponse = objResponse.filter(item => item.id !== id);
-    objResponse.push({id:id, text: input});
-    
+    objResponse.push({ id: id, text: input });
+
     //console.log("something added", objResponse);
-    
-    this.setState({response: objResponse}, ()=>{
+
+    this.setState({ response: objResponse }, () => {
       console.log("repsosneObjRes", this.state.response);
     })
 
   }
 
   sendForm = () => {
-    //fetch to post data
+    for (var prop in this.state.response[0]) {
+      if (this.state.response[0].hasOwnProperty(prop))
+        console.log("is false");
+    }
+
+    //console.log(JSON.stringify(this.state.response[0]) === JSON.stringify({}));
+    
+    if( (JSON.stringify(this.state.response[0]) === JSON.stringify({})) == true || 
+        typeof this.state.response[0]=== "undefined" ){
+    
+      alert("The form is empty");
+      alert("REFRESH");
+      return false;
+    }
+
 
     console.log("sending form...", this.state.response);
     alert("Reload!");
-    //window.location.reload()
-    //console.log("the items", this.props.theItems);
+    //fetch to post data
+    //window.location.reload();
+
   }
 
   removeItemTarget = (id) => {
-    console.log("now in tARGET",id);
-    console.log("this.props.theItems", this.props.theItems);
+    console.log("now in tARGET", id);
     var deleteItem = this.state.response;
 
     const result = deleteItem.filter(item => item.id !== id);
     console.log("reusltFulter", result);
-    this.setState({response:result})
-    this.props.updateItems(result,id);
+    this.setState({ response: result })
+    this.props.updateItems(result, id);
   }
-  
+
 
   render() {
     const { connectDropTarget, hovered, item } = this.props;
@@ -80,15 +95,15 @@ class Target extends Component {
 
     return connectDropTarget(
       <div className="target" style={{ background: backgroundColor }}>
-      Form Canvas
+        Form Canvas
          <div className="align-div">
-            <div className="card-container-target align-div">
+          <div className="card-container-target align-div">
             {this.props.targetItems.map((item, i) => (
-              <ItemTarget key={item.id} 
-                    item={item}
-                    draggable="true"
-                    removeItem={(value)=>  this.removeItemTarget(value)}
-                    triggerUpdateTarget = {(id,input)=>  this.updateTargetItems(id,input)}
+              <ItemTarget key={item.id}
+                item={item}
+                draggable="true"
+                removeItem={(value) => this.removeItemTarget(value)}
+                triggerUpdateTarget={(id, input) => this.updateTargetItems(id, input)}
               />
             ))}
           </div>
